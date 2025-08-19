@@ -1,0 +1,42 @@
+:root {
+--gap: 12px; --radius: 8px; }
+* {
+box-sizing: border-box; }
+body {
+margin: 0;
+font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background:#f6f7fb; }
+.container {
+max-width: 960px; padding: 24px; margin: 0 auto; }
+.card {
+background: white; border-radius: var(--radius); padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.input {
+width: 100%;
+padding: 10px 12px;
+border: 1px solid #ddd;
+border-radius: var(--radius); }
+.btn {
+padding: 10px 14px;
+border: none;
+border-radius: var(--radius);
+background: #111827;
+color: white;
+cursor: pointer; }
+.btn.secondary {
+background:#6b7280; }
+.row {
+display: flex;
+gap: var(--gap);
+flex-wrap: wrap; }
+.col {
+flex: 1 1 240px; }
+.error { color:#b91c1c;
+font-size: 0.9rem; }
+.table { width: 100%;
+border-collapse: collapse; }
+.table th, .table td { border-bottom:1px solid #eee;
+padding: 10px; text-align:left; }
+.actions { display:flex;
+gap:8px; }
+@media (max-width: 640px) {
+  .row { flex-direction: column; }
+}
