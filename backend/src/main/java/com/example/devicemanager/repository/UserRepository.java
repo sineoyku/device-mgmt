@@ -1,4 +1,12 @@
 package com.example.devicemanager.repository;
 
-public class UserRepository {
+import com.example.devicemanager.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public interface UserRepository extends JpaRepository<User, UUID> {
+    Optional<User> findByEmail(String email);
+    boolean existsByEmail(String email);
 }
