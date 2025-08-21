@@ -7,6 +7,7 @@ import com.example.devicemanager.exception.BadRequestException;
 import com.example.devicemanager.exception.NotFoundException;
 import com.example.devicemanager.repository.DeviceRepository;
 import com.example.devicemanager.util.Mappers;
+import com.example.devicemanager.entity.DeviceType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,9 +34,17 @@ public class DeviceService {
         if (deviceRepo.existsBySerialNumber(req.serialNumber())) {
             throw new BadRequestException("serialNumber must be unique");
         }
+        //CHECKING DT
+        final DeviceType dt;
+        try {
+            dt = DeviceType.from(req.type());
+        } catch (IllegalArgumentException ex) {
+            throw new BadRequestException(ex.getMessage());
+        }
+        //
         var d = Device.builder()
                 .name(req.name())
-                .type(req.type())
+                .type(dt) //ENUM
                 .serialNumber(req.serialNumber())
                 .userId(userId)
                 .build();
@@ -49,8 +58,16 @@ public class DeviceService {
         if (deviceRepo.existsBySerialNumberAndIdNot(req.serialNumber(), d.getId())) {
             throw new BadRequestException("serialNumber must be unique");
         }
+        //CHECKING DT
+        final DeviceType dt;
+        try {
+            dt = DeviceType.from(req.type());
+        } catch (IllegalArgumentException ex) {
+            throw new BadRequestException(ex.getMessage());
+        }
+        //
         d.setName(req.name());
-        d.setType(req.type());
+        d.setType(dt); //ENUM
         d.setSerialNumber(req.serialNumber());
         return Mappers.toDeviceResponse(deviceRepo.save(d));
     }

@@ -30,7 +30,7 @@ export default function DeviceForm({ initial, onSubmit, submitLabel = 'Save' }: 
 
     setBusy(true);
     try {
-      await onSubmit({ name, type, serialNumber: serial });
+      await onSubmit({ name, type: type.toUpperCase(), serialNumber: serial });
       setName(''); setType(''); setSerial('');
     } catch (err: any) {
       setError(err.message ?? 'Failed to save device');
@@ -46,8 +46,23 @@ export default function DeviceForm({ initial, onSubmit, submitLabel = 'Save' }: 
         <input className="input" value={name} onChange={e => setName(e.target.value)} placeholder="My Sensor" />
       </div>
       <div className="col">
-        <label>Type</label>
-        <input className="input" value={type} onChange={e => setType(e.target.value)} placeholder="SENSOR / CAMERA / ..." />
+        <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+          Type
+          <span
+            className="info-icon"
+            title="Allowed: ALARM, CAMERA, LIGHT, LOCK, SENSOR, THERMOSTAT, HUB, CONTROLLER, SWITCH, DOORBELL, AIR_PURIFIER"
+            aria-label="Allowed device types"
+            role="img"
+          >
+            i
+          </span>
+        </label>
+        <input
+          className="input"
+          value={type}
+          onChange={e => setType(e.target.value)}
+          placeholder="SENSOR / CAMERA / ..."
+        />
       </div>
       <div className="col">
         <label>Serial #</label>

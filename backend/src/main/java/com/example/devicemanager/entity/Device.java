@@ -20,8 +20,9 @@ public class Device {
     @Column(nullable = false, length = 255)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 64)
-    private String type;
+    private DeviceType type;
 
     @Column(nullable = false, length = 128, unique = true)
     private String serialNumber;

@@ -40,3 +40,19 @@ gap:8px; }
 @media (max-width: 640px) {
   .row { flex-direction: column; }
 }
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 12px;
+  line-height: 1;
+  background: #e5e7eb;    /* gray-200 */
+  color: #111827;         /* gray-900 */
+  cursor: help;
+  user-select: none;
+}
+.info-icon:hover { filter: brightness(0.95); }
+
