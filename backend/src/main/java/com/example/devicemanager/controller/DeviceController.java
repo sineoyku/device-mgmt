@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,8 +27,11 @@ public class DeviceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DeviceResponse>> list(Authentication auth) {
-        return ResponseEntity.ok(deviceService.list(userId(auth)));
+    public ResponseEntity<Page<DeviceResponse>> list(Authentication auth,
+                                                     @RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "8") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return ResponseEntity.ok(deviceService.list(userId(auth), pageable));
     }
 
     @GetMapping("/{id}")

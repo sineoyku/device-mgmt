@@ -27,7 +27,21 @@ export async function login(email: string, password: string) {
 export type Device = { id: string; name: string; type: string; serialNumber: string; createdAt: string; };
 export type DeviceInput = { name: string; type: string; serialNumber: string; };
 
-export const getDevices = () => request<Device[]>('/devices');
+//NEW PAGE TYPE
+export type PageResp<T> = {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  number: number;   // current page (0-based)
+  size: number;
+  first: boolean;
+  last: boolean;
+};
+
+export const getDevices = (page = 0, size = 8) =>
+  request<PageResp<Device>>(`/devices?page=${page}&size=${size}`);
+
+//export const getDevices = () => request<Device[]>('/devices');
 export const getDevice = (id: string) => request<Device>(`/devices/${id}`);
 export const createDevice = (data: DeviceInput) =>
   request<Device>('/devices', { method: 'POST', body: JSON.stringify(data) });

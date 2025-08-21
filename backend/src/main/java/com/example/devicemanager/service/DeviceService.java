@@ -10,6 +10,8 @@ import com.example.devicemanager.util.Mappers;
 import com.example.devicemanager.entity.DeviceType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,8 +22,9 @@ public class DeviceService {
 
     private final DeviceRepository deviceRepo;
 
-    public List<DeviceResponse> list(UUID userId) {
-        return deviceRepo.findAllByUserId(userId).stream().map(Mappers::toDeviceResponse).toList();
+    public Page<DeviceResponse> list(UUID userId, Pageable pageable) {
+        return deviceRepo.findAllByUserId(userId, pageable)
+                .map(Mappers::toDeviceResponse);
     }
 
     public DeviceResponse get(UUID id, UUID userId) {
