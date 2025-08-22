@@ -1,5 +1,3 @@
-
-#!/usr/bin/env node
 const { existsSync } = require('fs');
 const { spawnSync } = require('child_process');
 
