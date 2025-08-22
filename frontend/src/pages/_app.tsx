@@ -3,6 +3,7 @@ import '../styles/globals.css'
 import { useEffect } from 'react'
 import { ensureValidOrLogout, setupAutoLogout } from 'lib/auth'
 import { useRouter } from 'next/router'
+import Footer from 'components/Footer'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -18,5 +19,12 @@ export default function App({ Component, pageProps }: AppProps) {
     return cleanup;
   }, [router]);
 
-  return <Component {...pageProps} />
+  return (
+             <div className="page">
+               <main className="main">
+                 <Component {...pageProps} />
+               </main>
+               <Footer />
+             </div>
+           )
 }
