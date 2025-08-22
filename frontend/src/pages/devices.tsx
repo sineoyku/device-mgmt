@@ -4,6 +4,7 @@ import { isAuthed, clearToken } from 'lib/auth';
 import { getDevices, createDevice, updateDevice, deleteDevice, type Device, type DeviceInput, type PageResp } from 'lib/api';
 import DeviceForm from 'components/DeviceForm';
 import DeviceList from 'components/DeviceList';
+import { setupAutoLogout } from 'lib/auth'
 
 export default function DevicesPage() {
   const router = useRouter();
@@ -29,10 +30,13 @@ export default function DevicesPage() {
     }
   }
 
-  useEffect(() => {
-    if (!isAuthed()) { router.replace('/login'); return; }
-    load(0);
-  }, [router]);
+    useEffect(() => {
+      if (!isAuthed()) { clearToken(); router.replace('/login'); return; }
+      // keep a page-local timer too (redundant but harmless)
+      const cleanup = setupAutoLogout(() => router.replace('/login'));
+      (async () => { await load(0); })();
+      return cleanup;
+    }, [router]);
 
   async function add(d: DeviceInput) {
     await createDevice({ ...d, type: d.type.toUpperCase() }); // small nicety

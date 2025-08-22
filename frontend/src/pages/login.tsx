@@ -3,6 +3,7 @@ import { login } from 'lib/api';
 import { setToken, isAuthed } from 'lib/auth';
 import { validateEmail } from 'lib/validate';
 import { useRouter } from 'next/router';
+import { setupAutoLogout } from 'lib/auth'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('demo@demo.com');
@@ -21,9 +22,10 @@ export default function LoginPage() {
 
     setLoading(true);
     try {
-      const res = await login(email, password);
-      setToken(res.token);
-      router.push('/devices');
+        const res = await login(email, password);
+        setToken(res.token);
+        setupAutoLogout(() => router.replace('/login')); // start timer now
+        router.push('/devices');
     } catch (err: any) {
       setError(err.message || 'Login failed');
     } finally {

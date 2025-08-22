@@ -3,25 +3,32 @@ import { getToken } from './auth';
 const BASE = process.env.NEXT_PUBLIC_API_BASE ?? 'http://localhost:8080';
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
-const headers: HeadersInit = { 'Content-Type': 'application/json', ...(options.headers || {}) };
-const token = getToken();
-if (token) headers['Authorization'] = `Bearer ${token}`;
+    const headers: HeadersInit = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+    const token = getToken();
 
-  const res = await fetch(`${BASE}${path}`, { ...options, headers });
-  if (!res.ok) {
-    const msg = await res.json().catch(() => ({ error: res.statusText }));
-    throw new Error(msg.error ?? 'Request failed');
-  }
-  if (res.status === 204) return undefined as unknown as T;
-  return res.json() as Promise<T>;
-}
+    if (token) headers['Authorization'] = `Bearer ${token}`;
 
-export type LoginResponse = { token: string; userId: string; email: string; };
-export async function login(email: string, password: string) {
-  return request<LoginResponse>('/auth/login', {
-    method: 'POST',
-    body: JSON.stringify({ email, password })
-  });
+    const res = await fetch(`${BASE}${path}`, { ...options, headers });
+    if (res.status === 401) {
+        clearToken();
+        if (typeof window !== 'undefined') window.location.href = '/login';
+        throw new Error('Session expired. Please sign in again.');
+      }
+
+      if (!res.ok) {
+        const msg = await res.json().catch(() => ({ error: res.statusText }));
+        throw new Error(msg.error ?? 'Request failed');
+      }
+      if (res.status === 204) return undefined as unknown as T;
+      return res.json() as Promise<T>;
+      }
+
+    export type LoginResponse = { token: string; userId: string; email: string; };
+    export async function login(email: string, password: string) {
+      return request<LoginResponse>('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password })
+      });
 }
 
 export type Device = { id: string; name: string; type: string; serialNumber: string; createdAt: string; };
