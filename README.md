@@ -27,6 +27,7 @@
 
 ## Run 
 - cd frontend npm install npm run dev
+- Runs on http://localhost:3000/login
 - 404 at root: use /login (or add an index redirect if desired).
 - Use
   `(async () => {`
