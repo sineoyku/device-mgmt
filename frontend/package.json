@@ -2,7 +2,9 @@
   "name": "frontend",
   "private": true,
   "version": "0.1.0",
+  "engines": { "node": ">=18" },
   "scripts": {
+    "predev": "node scripts/ensure-deps.js",
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start -p 3000",
