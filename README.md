@@ -31,7 +31,7 @@
 - 404 at root: use /login (or add an index redirect if desired).
 - Use
   `(async () => {`
-  `const BASE = 'http://localhost:8080'; // change if your API runs elsewhere`
+  `const BASE = 'http://localhost:8080';`
   `const token = localStorage.getItem('jwt_token');`
   `if (!token) { console.error('No JWT token in localStorage. Log in first.'); return; }`
 
@@ -72,7 +72,6 @@
     } catch (e) {
       console.error('Network error', d.serialNumber, e);
     }
-    // optional tiny delay to avoid spamming
     await new Promise(r => setTimeout(r, 100));
   }
 })();`
