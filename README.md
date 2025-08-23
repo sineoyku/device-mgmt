@@ -9,6 +9,9 @@
 - Pagination: `GET /devices?page=0&size=8`
 - H2 console enabled for debugging
 
+## Prerequisites
+- **Java 17+**
+
 ## Run
 - cd backend ./mvnw spring-boot:run
 - H2 console: http://localhost:8080/h2-console
@@ -24,6 +27,10 @@
 - `/devices` list/add/edit/delete with **8 per page** pagination
 - Auto-logout at JWT expiry
 - Tooltip on **Type** field listing allowed device types
+
+## Prerequisites
+- **Node.js 18+**
+- npm
 
 ## Run 
 - cd frontend npm install npm run dev
